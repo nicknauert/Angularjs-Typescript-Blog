@@ -15,7 +15,6 @@ export module ServicesM {
 
         // Static injection makes $resource available on the class, instead of only on the instance
         static $inject = ["$resource"];
-        public users = [];
 
         constructor( private $resource: ng.resource.IResourceService){}
 
@@ -29,6 +28,15 @@ export module ServicesM {
                 }
             });
         }
+
+        getSinglePostResource(id): ng.resource.IResourceClass<IPostResource> {
+            return this.$resource("http://localhost:3000/posts/:post_id", { post_id: id }, {
+                get: {
+                    method: 'GET',
+                    isArray: false
+                }
+            });
+        }
     }
 }
 
@@ -38,6 +46,7 @@ export module Models {
         title: string;
         subtitle: string;
         content: string;
+        tags: string;
     }
 
 }

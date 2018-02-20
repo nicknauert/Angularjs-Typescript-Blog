@@ -32,6 +32,19 @@ export module ComponentsM {
         }
     }
 
+    export class SinglePostComponent implements ng.IComponentOptions {
+
+        public controller: ng.Injectable<ng.IControllerConstructor>;
+        public controllerAs: string;
+        public template: string;
+    
+        constructor() {
+            this.controller = ControllerM.SinglePostCtrl;
+            this.controllerAs = "$ctrl";
+            this.template = require("../public/partials/singlePost.html")
+        }
+    }
+
     export class FormComponent implements ng.IComponentOptions {
 
         public controller: ng.Injectable<ng.IControllerConstructor>;

@@ -38,6 +38,9 @@ module app {
                     .when('/', {
                         templateUrl: "./views/post_view.html"
                     })
+                    .when('/posts/:post_id', {
+                        templateUrl: './views/single_post_view.html'
+                    })
                     .when('/create', {
                         templateUrl: "./views/new_post_view.html"
                     })
@@ -55,5 +58,6 @@ module MyTestApp {
     myApp.addComponent('navBar', new ComponentsM.NavComponent());
     myApp.addComponent('mainComponent', new ComponentsM.MainComponent());
     myApp.addComponent('newPostForm', new ComponentsM.FormComponent());
+    myApp.addComponent('singlePost', new ComponentsM.SinglePostComponent());
     myApp.addService("dataAccessService", ServicesM.DataAccessService);
 }

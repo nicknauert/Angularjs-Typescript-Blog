@@ -28,6 +28,9 @@ var app;
                         .when('/', {
                         templateUrl: "./views/post_view.html"
                     })
+                        .when('/posts/:post_id', {
+                        templateUrl: './views/single_post_view.html'
+                    })
                         .when('/create', {
                         templateUrl: "./views/new_post_view.html"
                     });
@@ -45,5 +48,6 @@ var MyTestApp;
     myApp.addComponent('navBar', new components_1.ComponentsM.NavComponent());
     myApp.addComponent('mainComponent', new components_1.ComponentsM.MainComponent());
     myApp.addComponent('newPostForm', new components_1.ComponentsM.FormComponent());
+    myApp.addComponent('singlePost', new components_1.ComponentsM.SinglePostComponent());
     myApp.addService("dataAccessService", services_1.ServicesM.DataAccessService);
 })(MyTestApp || (MyTestApp = {}));

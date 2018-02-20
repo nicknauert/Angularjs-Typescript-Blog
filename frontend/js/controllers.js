@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ControllerM;
 (function (ControllerM) {
     ///////////////////////////////
-    // MAIN CONTROLLER
+    // MAIN CONTROLLER 
     ///////////////
     var MainCtrl = /** @class */ (function () {
         function MainCtrl($http, dataAccessService, $scope) {
@@ -12,24 +12,58 @@ var ControllerM;
             this.$http = $http;
             this.dataAccessService = dataAccessService;
             this.$scope = $scope;
-            dataAccessService
-                .getPostsResource()
-                .query(function (data) {
-                console.log(data);
-                _this.$scope.posts = data;
-            });
             this.$scope.$on("POST_SUBMITTED", function () {
-                dataAccessService
-                    .getPostsResource()
-                    .query(function (data) {
-                    _this.$scope.posts = data;
-                });
+                _this.getPostList();
             });
         }
+        MainCtrl.prototype.$onInit = function () {
+            console.log("init");
+            this.getPostList();
+        };
+        MainCtrl.prototype.getPostList = function () {
+            var _this = this;
+            this.dataAccessService
+                .getPostsResource()
+                .query(function (data) {
+                var formattedData = data.map(function (post) {
+                    if (post.tags) {
+                        post.tags = post.tags.split(' ');
+                    }
+                    return post;
+                });
+                console.log(formattedData);
+                _this.$scope.posts = formattedData;
+            });
+        };
         MainCtrl.inject = ["dataAccessService", "$scope"];
         return MainCtrl;
     }());
     ControllerM.MainCtrl = MainCtrl;
+    var SinglePostCtrl = /** @class */ (function () {
+        function SinglePostCtrl($http, dataAccessService, $scope, $location) {
+            this.$http = $http;
+            this.dataAccessService = dataAccessService;
+            this.$scope = $scope;
+            this.$location = $location;
+        }
+        SinglePostCtrl.prototype.$onInit = function () {
+            console.log(this.$location.path().split('/')[2]);
+            this.getSinglePost(this.$location.path().split('/')[2]);
+        };
+        SinglePostCtrl.prototype.getSinglePost = function (id) {
+            var _this = this;
+            this.dataAccessService
+                .getSinglePostResource(id)
+                .query(function (data) {
+                var postObj = data[0];
+                postObj.tags = postObj.tags.split(' ');
+                _this.$scope.post = postObj;
+            });
+        };
+        SinglePostCtrl.inject = ["dataAccessService", "$scope", "$location"];
+        return SinglePostCtrl;
+    }());
+    ControllerM.SinglePostCtrl = SinglePostCtrl;
     var PostFormCtrl = /** @class */ (function () {
         function PostFormCtrl($scope, dataAccessService, $http, $rootScope, $location) {
             this.$scope = $scope;
@@ -40,25 +74,31 @@ var ControllerM;
             this.dataAccessService = dataAccessService;
         }
         PostFormCtrl.prototype.submit = function () {
-            var _this = this;
             var newPostObject = {
                 title: this.$scope.title,
                 subtitle: this.$scope.subtitle,
                 content: this.$scope.content,
+                tags: this.$scope.tags
             };
+            this.sendNewPost(newPostObject);
+        };
+        PostFormCtrl.prototype.sendNewPost = function (postObj) {
+            var _this = this;
             this.$http({
                 method: "POST",
                 url: "http://localhost:3000/posts",
-                data: newPostObject,
+                data: postObj,
                 headers: {
                     'Content-Type': "application/json"
                 }
-            }).then(function (res) {
-                _this.$rootScope.$broadcast("POST_SUBMITTED");
-                console.log("Post Form Ctrl Broadcasted");
-                _this.$location.path("/");
-            });
-            return true;
+            })
+                .then(function (res) { return _this.handleNewPostResponse(res); })
+                .catch(function (err) { return console.log(err); });
+        };
+        PostFormCtrl.prototype.handleNewPostResponse = function (res) {
+            console.log("new Post Handler");
+            this.$rootScope.$broadcast("POST_SUBMITTED");
+            this.$location.path("/");
         };
         PostFormCtrl.$inject = ["$scope", "dataAccessService", "$http", "$rootScope", "$location"];
         return PostFormCtrl;

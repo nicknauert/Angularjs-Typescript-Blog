@@ -22,6 +22,15 @@ var ComponentsM;
         return MainComponent;
     }());
     ComponentsM.MainComponent = MainComponent;
+    var SinglePostComponent = /** @class */ (function () {
+        function SinglePostComponent() {
+            this.controller = controllers_1.ControllerM.SinglePostCtrl;
+            this.controllerAs = "$ctrl";
+            this.template = require("../public/partials/singlePost.html");
+        }
+        return SinglePostComponent;
+    }());
+    ComponentsM.SinglePostComponent = SinglePostComponent;
     var FormComponent = /** @class */ (function () {
         function FormComponent() {
             this.controller = controllers_1.ControllerM.PostFormCtrl;

@@ -31,8 +31,13 @@ app.use(bodyParser.json())
 
 
 async function getPosts() {
-    const postList = await Post.query().orderBy('id', "desc")
+    const postList = await Post.query().orderBy('post_id', "desc")
     return postList
+}
+
+async function getPostById(id) {
+    const singlePost = await Post.query().where("post_id", id)
+    return singlePost
 }
 
 async function makePost(post) {
@@ -41,13 +46,19 @@ async function makePost(post) {
         .insert(post)
 }
 
-
-
 app.get('/posts', (req, res) => {
     getPosts().then( data => {
-        console.log("SENDING THIS DATA >>>> \n", data);
         res.send(data)
     })
+})
+
+app.get('/posts/:post_id', (req, res) => {
+    getPostById(req.params.post_id)
+        .catch(err => console.log(err))
+        .then( data => {
+            console.log('GOT SINGLE POST', data);
+            res.send(data)
+        })
 })
 
 app.post('/posts', (req, res) => {

@@ -6,7 +6,6 @@ var ServicesM;
     var DataAccessService = /** @class */ (function () {
         function DataAccessService($resource) {
             this.$resource = $resource;
-            this.users = [];
         }
         // The actual service. Resource Class is a generic interface. Applying our custom IUserResource interface to it
         // will require our custom type to be returned from the ajax request
@@ -15,6 +14,14 @@ var ServicesM;
                 query: {
                     method: 'GET',
                     isArray: true
+                }
+            });
+        };
+        DataAccessService.prototype.getSinglePostResource = function (id) {
+            return this.$resource("http://localhost:3000/posts/:post_id", { post_id: id }, {
+                get: {
+                    method: 'GET',
+                    isArray: false
                 }
             });
         };

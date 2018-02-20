@@ -3,13 +3,10 @@
 import { IHttpResponse, IHttpService } from "angular";
 import { ServicesM, Models } from "./services";
 
-
-
-
 export module ControllerM {
 
     ///////////////////////////////
-    // MAIN CONTROLLER
+    // MAIN CONTROLLER 
     ///////////////
 
     interface IMainCtrlScope extends ng.IScope {
@@ -20,36 +17,88 @@ export module ControllerM {
 
         static inject: string[] = ["dataAccessService", "$scope"]
 
-        constructor(private $http: ng.IHttpService,
-            private dataAccessService: ServicesM.DataAccessService,
-            private $scope: IMainCtrlScope) {
-            dataAccessService
-                .getPostsResource()
-                .query(data => {
-                    console.log(data);
-                    this.$scope.posts = data;
+        constructor
+            (
+                private $http: ng.IHttpService,
+                private dataAccessService: ServicesM.DataAccessService,
+                private $scope: IMainCtrlScope
+            ){
+                this.$scope.$on("POST_SUBMITTED", () => {
+                    this.getPostList();
                 })
-            this.$scope.$on("POST_SUBMITTED", () => {
-                dataAccessService
+            }
+
+            $onInit(){
+                console.log("init");
+                this.getPostList();
+            }
+
+            getPostList(){
+                this.dataAccessService
                     .getPostsResource()
                     .query(data => {
-                        this.$scope.posts = data;
+                        let formattedData = data.map( post => {
+                            if(post.tags){
+                                post.tags = post.tags.split(' ');
+                            }
+                            return post
+                        });
+                        console.log(formattedData);
+                        this.$scope.posts = formattedData;
                     })
-            })
+            }
+    }
+
+    ///////////////////////////////
+    // SINGLE POST CONTROLLER
+    ///////////////
+
+    interface IPostCtrlScope extends ng.IScope{
+        post;
+    }
+
+    export class SinglePostCtrl implements ng.IController {
+        
+
+        static inject: string[] = ["dataAccessService", "$scope", "$location"]
+
+        constructor
+            (
+                private $http: ng.IHttpService,
+                private dataAccessService: ServicesM.DataAccessService,
+                private $scope: IPostCtrlScope,
+                private $location: ng.ILocationService
+            ){
+                
+            }
+
+        $onInit(){
+            console.log(this.$location.path().split('/')[2]);
+            this.getSinglePost( this.$location.path().split('/')[2] )
         }
 
+        getSinglePost(id){
+            this.dataAccessService
+                .getSinglePostResource(id)
+                .query(data => {
+                    let postObj = data[0];
+                    postObj.tags = postObj.tags.split(' ');
+                    this.$scope.post = postObj
+                })
+        }
 
     }
 
     
     ///////////////////////////////
-    // NEW USER FORM CONTROLLER
+    // NEW POST FORM CONTROLLER
     ///////////////
     
     interface IPostFormScope extends ng.IScope {
         title: string;
         subtitle: string;
         content: string;
+        tags: string;
     }
 
     export class PostFormCtrl implements ng.IController {
@@ -65,28 +114,33 @@ export module ControllerM {
             this.dataAccessService = dataAccessService
         }
 
-        submit(){
+        submit(): void{
             var newPostObject: Models.IPost = {
                 title: this.$scope.title,
                 subtitle: this.$scope.subtitle,
                 content: this.$scope.content,
+                tags: this.$scope.tags
             }
+            this.sendNewPost(newPostObject);
+        }
 
+        sendNewPost(postObj){
             this.$http({
                 method: "POST",
                 url: "http://localhost:3000/posts",
-                data: newPostObject,
+                data: postObj,
                 headers: {
                     'Content-Type': "application/json"
-                }}).then( res => {
-                    this.$rootScope.$broadcast("POST_SUBMITTED")
-                    console.log("Post Form Ctrl Broadcasted");
-                    this.$location.path("/")
-                })
-            
-            return true;
+                }})
+                .then(res => this.handleNewPostResponse(res))
+                .catch( err => console.log(err));
         }
 
+        handleNewPostResponse(res): void{
+                console.log("new Post Handler");
+                this.$rootScope.$broadcast("POST_SUBMITTED")
+                this.$location.path("/")
+        }
     }
 
     export class NavCtrl implements ng.IController {
