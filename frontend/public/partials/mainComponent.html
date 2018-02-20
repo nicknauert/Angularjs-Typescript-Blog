@@ -4,7 +4,7 @@
             <div class="card-content">
                 <h2 class="white-text"><a href="/#!/posts/{{post.post_id}}">{{post.title}}</a></h2>
                 <h5 class="blue-text text-lighten-3">{{post.subtitle}}</h5>
-                <p class="blue-text text-lighten-5">{{post.content}}</p>
+                <p class="blue-text text-lighten-5">{{post.content | limitTo: 300}}...</p>
             </div>
                 <div ng-if="post.tags" class="card-action">
                     <span class="blue-text text-lighten-2">Tags</span>

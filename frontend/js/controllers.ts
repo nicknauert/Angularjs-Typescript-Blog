@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/@types/angular-resource/index.d.ts" />
 
-import { IHttpResponse, IHttpService } from "angular";
+import { IHttpResponse, IHttpService, IFilterService } from "angular";
 import { ServicesM, Models } from "./services";
 
 export module ControllerM {
@@ -15,13 +15,14 @@ export module ControllerM {
 
     export class MainCtrl implements ng.IController {
 
-        static inject: string[] = ["dataAccessService", "$scope"]
+        static inject: string[] = ["dataAccessService", "$scope", "$filter"]
 
         constructor
             (
                 private $http: ng.IHttpService,
                 private dataAccessService: ServicesM.DataAccessService,
-                private $scope: IMainCtrlScope
+                private $scope: IMainCtrlScope,
+                private $filter: IFilterService
             ){
                 this.$scope.$on("POST_SUBMITTED", () => {
                     this.getPostList();
@@ -137,7 +138,6 @@ export module ControllerM {
         }
 
         handleNewPostResponse(res): void{
-                console.log("new Post Handler");
                 this.$rootScope.$broadcast("POST_SUBMITTED")
                 this.$location.path("/")
         }

@@ -18,7 +18,7 @@ var ServicesM;
             });
         };
         DataAccessService.prototype.getSinglePostResource = function (id) {
-            return this.$resource("http://localhost:3000/posts/:post_id", { post_id: id }, {
+            return this.$resource("http://localhost:3000/post/:post_id", { post_id: id }, {
                 get: {
                     method: 'GET',
                     isArray: false

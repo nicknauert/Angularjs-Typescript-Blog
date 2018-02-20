@@ -40,10 +40,16 @@ async function getPostById(id) {
     return singlePost
 }
 
+async function getPostsWithTag(tag){
+    const postList = await Post.query().where('tags', "like", tag)
+    return postList;
+}
+
 async function makePost(post) {
     await Post
         .query()
-        .insert(post)
+        .insert(post);
+    
 }
 
 app.get('/posts', (req, res) => {
@@ -52,11 +58,20 @@ app.get('/posts', (req, res) => {
     })
 })
 
-app.get('/posts/:post_id', (req, res) => {
+app.get('/post/:post_id', (req, res) => {
     getPostById(req.params.post_id)
         .catch(err => console.log(err))
         .then( data => {
             console.log('GOT SINGLE POST', data);
+            res.send(data)
+        })
+})
+
+app.get('/posts/tags/:tag', (req, res) => {
+    getPostsWithTag(req.params.tag)
+        .catch(err => console.log(err))
+        .then( data => {
+            console.log('GOT TAG LIST', data);
             res.send(data)
         })
 })
