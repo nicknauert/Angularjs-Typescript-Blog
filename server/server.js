@@ -40,7 +40,7 @@ async function getPostById(id) {
     return singlePost
 }
 
-async function getPostsWithTag(tag){
+async function getPostsWithTag(tag) {
     const postList = await Post.query().where('tags', "like", tag)
     return postList;
 }
