@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var main_component_1 = require("./main/main.component");
+exports.MainComponent = main_component_1.MainComponent;
+var navBar_component_1 = require("./navBar/navBar.component");
+exports.NavComponent = navBar_component_1.NavComponent;
+var singlePost_component_1 = require("./singlePost/singlePost.component");
+exports.SinglePostComponent = singlePost_component_1.SinglePostComponent;
+var newPostForm_component_1 = require("./newPost/newPostForm.component");
+exports.FormComponent = newPostForm_component_1.FormComponent;

@@ -1,8 +1,9 @@
 "use strict";
-/// <reference path="./_fix.d.ts" />
+/// <reference path="./declarations/_fix.d.ts" />
+/// <reference path="../../node_modules/@types/angular-resource/index.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-var components_1 = require("./components");
-var services_1 = require("./services");
+var index_1 = require("./components/index");
+var services_1 = require("./services/services");
 var app;
 (function (app) {
     var Module = /** @class */ (function () {
@@ -45,9 +46,9 @@ var MyTestApp;
 (function (MyTestApp) {
     var myApp = new app.Module('myApp', ["ngResource", "ngRoute"]);
     myApp.config();
-    myApp.addComponent('navBar', new components_1.ComponentsM.NavComponent());
-    myApp.addComponent('mainComponent', new components_1.ComponentsM.MainComponent());
-    myApp.addComponent('newPostForm', new components_1.ComponentsM.FormComponent());
-    myApp.addComponent('singlePost', new components_1.ComponentsM.SinglePostComponent());
-    myApp.addService("dataAccessService", services_1.ServicesM.DataAccessService);
+    myApp.addComponent('navBar', new index_1.NavComponent());
+    myApp.addComponent('mainComponent', new index_1.MainComponent());
+    myApp.addComponent('newPostForm', new index_1.FormComponent());
+    myApp.addComponent('singlePost', new index_1.SinglePostComponent());
+    myApp.addService("dataAccessService", services_1.DataAccessService);
 })(MyTestApp || (MyTestApp = {}));

@@ -1,7 +1,8 @@
-/// <reference path="./_fix.d.ts" />
+/// <reference path="./declarations/_fix.d.ts" />
+/// <reference path="../../node_modules/@types/angular-resource/index.d.ts" />
 
-import { ComponentsM } from "./components"
-import { ServicesM } from "./services"
+import { MainComponent, FormComponent, NavComponent, SinglePostComponent } from './components/index'
+import { DataAccessService } from "./services/services"
 
 module app {
 
@@ -55,9 +56,9 @@ module app {
 module MyTestApp {
     var myApp = new app.Module('myApp', ["ngResource", "ngRoute"]);
     myApp.config();
-    myApp.addComponent('navBar', new ComponentsM.NavComponent());
-    myApp.addComponent('mainComponent', new ComponentsM.MainComponent());
-    myApp.addComponent('newPostForm', new ComponentsM.FormComponent());
-    myApp.addComponent('singlePost', new ComponentsM.SinglePostComponent());
-    myApp.addService("dataAccessService", ServicesM.DataAccessService);
+    myApp.addComponent('navBar', new NavComponent());
+    myApp.addComponent('mainComponent', new MainComponent());
+    myApp.addComponent('newPostForm', new FormComponent());
+    myApp.addComponent('singlePost', new SinglePostComponent());
+    myApp.addService("dataAccessService", DataAccessService);
 }
