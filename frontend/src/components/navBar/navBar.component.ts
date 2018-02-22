@@ -11,5 +11,4 @@ export class NavComponent implements ng.IComponentOptions {
         this.controllerAs = "$ctrl";
         this.template = require("./navBar.html")
     }
-
 }

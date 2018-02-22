@@ -37,13 +37,13 @@ module app {
                 // ROUTING
                 $routeProvider
                     .when('/', {
-                        templateUrl: "./views/post_view.html"
+                        template: "<main-component></main-component>"
                     })
                     .when('/posts/:post_id', {
-                        templateUrl: './views/single_post_view.html'
+                        template: '<single-post></single-post>'
                     })
                     .when('/create', {
-                        templateUrl: "./views/new_post_view.html"
+                        template: "<new-post-form></new-post-form>"
                     })
 
             }])

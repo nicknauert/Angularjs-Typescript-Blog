@@ -2,9 +2,9 @@
         <div class="col s9 m9" ng-repeat="post in $ctrl.$scope.posts track by $index">
             <div class="card blue darken-3">
                 <div class="card-content">
-                    <h2 class="white-text"><a href="/#!/posts/{{post.post_id}}">{{post.title}}</a></h2>
-                    <h5 class="blue-text text-lighten-3">{{post.subtitle}}</h5>
-                    <p class="blue-text text-lighten-5 flow-text">{{post.content | limitTo: 300}}...</p>
+                    <h2><a  class="white-text post-title" href="/#!/posts/{{post.post_id}}">{{post.title}}</a></h2>
+                    <h5 class="blue-text text-lighten-4">{{post.subtitle}}</h5>
+                    <p class="blue-text text-lighten-4" style="white-space: pre-line">{{post.content | limitTo: 300}}...</p>
                 </div>
                     <div ng-if="post.tags" class="card-action">
                         <span class="blue-text text-lighten-2">Tags</span>

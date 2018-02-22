@@ -1,9 +1,9 @@
 <div class="col s9 m9">
     <div class="card blue darken-3">
         <div class="card-content">
-            <h2 class="white-text">{{$ctrl.$scope.post.title}}</h2>
-            <h5 class="blue-text text-lighten-3">{{$ctrl.$scope.post.subtitle}}</h5>
-            <p class="blue-text text-lighten-5 flow-text">{{$ctrl.$scope.post.content}}</p>
+            <h2 class="white-text post-title">{{$ctrl.$scope.post.title}}</h2>
+            <h5 class="blue-text text-lighten-4 post-sub-title">{{$ctrl.$scope.post.subtitle}}</h5>
+            <p class="blue-text text-lighten-4" style="white-space: pre-line">{{$ctrl.$scope.post.content}}</p>
         </div>
         <div ng-if="$ctrl.$scope.post.tags" class="card-action">
             <span class="blue-text text-lighten-2">Tags</span>

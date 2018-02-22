@@ -1,12 +1,13 @@
 var path = require('path');
+var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     devtool: 'inline-source-map',
-    context: path.resolve('frontend/src'),
-    entry: './app.ts',
+    context: path.resolve('frontend'),
+    entry: './src/app.ts',
     output: {
-        path: path.resolve('build/js/'),
-        publicPath: '/public/assets',
+        path: path.resolve('build/'),
+        publicPath: "/build/",
         filename: 'bundle.js'
     },
     resolve: {
@@ -19,16 +20,23 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                loader: 'ts-loader'
+                loader: 'ts-loader',
+                exclude: "/node_modules/"
             },
             {
                 test: /\.html$/,
-                loader: 'html-loader'
-            }
+                loader: 'html-loader',
+                exclude: "/node_modules/"
+            },
         ]
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'src/index.html'
+        })
+    ],
     devServer: {
-        contentBase: 'frontend/src',
+        contentBase: 'build',
         port: 5000
     }
 }
